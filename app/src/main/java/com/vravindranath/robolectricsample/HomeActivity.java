@@ -7,8 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.robosoft.robolectricsample.R;
-
 
 public class HomeActivity extends Activity implements View.OnClickListener {
 
