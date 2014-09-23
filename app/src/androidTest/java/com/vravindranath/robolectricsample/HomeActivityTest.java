@@ -3,8 +3,6 @@ package com.vravindranath.robolectricsample;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.robosoft.robolectricsample.R;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
