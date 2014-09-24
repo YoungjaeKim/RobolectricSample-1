@@ -1,7 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'robolectric'
-apply plugin: 'idea'
-apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 20
@@ -25,6 +22,40 @@ android {
     }
 }
 
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile 'junit:junit:4.11'
+    androidTestCompile 'org.robolectric:robolectric:2.3'
+    androidTestCompile 'com.squareup:fest-android:1.0.0'
+    androidTestCompile 'org.mockito:mockito-all:1.9.5'
+}
+
+//Robolectric
+apply plugin: 'robolectric'
+
+robolectric {
+    // configure the set of classes for JUnit tests
+    include '**/*Test.class'
+    exclude '**/espresso/**/*.class'
+
+    // configure max heap size of the test JVM
+    maxHeapSize = '2048m'
+
+    // configure whether failing tests should fail the build
+    ignoreFailures true
+}
+
+//Jacoco
+apply plugin: 'idea'
+
+idea {
+    module {
+        testOutputDir = file('build/test-classes/debug')
+    }
+}
+
+apply plugin: 'jacoco'
+
 jacoco {
     toolVersion = "0.7.1.201405082137"
 }
@@ -35,19 +66,6 @@ def coverageSourceDirs = [
         'src/main/java',
         'src/gen'
 ]
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile 'junit:junit:4.11'
-    androidTestCompile 'org.robolectric:robolectric:2.3'
-    androidTestCompile 'com.squareup:fest-android:1.0.0'
-    androidTestCompile 'org.mockito:mockito-all:1.9.5'
-}
-
-robolectric {
-    include '**/*Test.class'
-    exclude '**/espresso/**/*.class'
-}
 
 // Add JaCoCo test reporting to the test task
 // http://chrisjenx.com/gradle-robolectric-jacoco-dagger/
@@ -67,12 +85,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
             ])
     sourceDirectories = files(coverageSourceDirs)
     executionData = files('build/jacoco/testDebug.exec')
-}
-
-idea {
-    module {
-        testOutputDir = file('build/test-classes/debug')
-    }
 }
 
 task initGradleTest << {
